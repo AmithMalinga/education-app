@@ -82,7 +82,7 @@ const Home = ({
       {/* Developer Details */}
       <View style={styles.footer}>
         <Text style={styles.footerText}>
-          Developed with ❤️ by Amith Malinga (Index No.:214130R)
+          Developed with ❤️ by Amith Malinga (214130R)
         </Text>
         <Text style={styles.footerSubText}>
           Contact: malingaamith1@gmail.com | +94 70 21 33 691
