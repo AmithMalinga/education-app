@@ -7,6 +7,8 @@ import {
   StyleSheet,
   ImageBackground,
   Dimensions,
+  KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -26,109 +28,121 @@ export default function Register({ navigation }: any) {
   } = useForm<FormValues>();
 
   const onSubmit = (data: FormValues) => {
-    alert('Registration successful!');
+    alert('Registration successful! (Developer Note: Data will be available in the console log)');
     console.log('Form Data:', data);
     navigation.navigate('Login');
   };
 
   return (
-    <ImageBackground
-      source={require('../assets/Register.png')} // Replace with your image
-      style={[styles.background, { width: screenWidth }]}
-      resizeMode="cover"
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior="padding"
     >
-      <View style={styles.container}>
-        <Text style={styles.text}>Name</Text>
-        <Controller
-          control={control}
-          name="name"
-          rules={{
-            required: 'Name is required',
-            minLength: { value: 2, message: 'Name must be at least 2 characters' },
-          }}
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
-              placeholder="Enter Name"
-              value={value}
-              onChangeText={onChange}
+      <ImageBackground
+        source={require('../assets/Register.png')} // Replace with your image
+        style={[styles.background, { width: screenWidth, height: screenHeight }]}
+        resizeMode="cover"
+      >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.container}>
+            <Text style={styles.text}>Name</Text>
+            <Controller
+              control={control}
+              name="name"
+              rules={{
+                required: 'Name is required',
+                minLength: { value: 2, message: 'Name must be at least 2 characters long' },
+              }}
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter Name"
+                  value={value}
+                  onChangeText={onChange}
+                />
+              )}
             />
-          )}
-        />
-        {errors.name && <Text style={styles.errorText}>{errors.name.message}</Text>}
+            {errors.name && <Text style={styles.errorText}>{errors.name.message}</Text>}
 
-        <Text style={styles.text}>Username</Text>
-        <Controller
-          control={control}
-          name="username"
-          rules={{
-            required: 'Username is required',
-            minLength: { value: 3, message: 'Username must be at least 3 characters' },
-          }}
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
-              placeholder="Enter Username"
-              value={value}
-              onChangeText={onChange}
+            <Text style={styles.text}>Username</Text>
+            <Controller
+              control={control}
+              name="username"
+              rules={{
+                required: 'Username is required',
+                minLength: { value: 4, message: 'Username must be at least 4 characters long' },
+              }}
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter Username"
+                  value={value}
+                  onChangeText={onChange}
+                />
+              )}
             />
-          )}
-        />
-        {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
+            {errors.username && <Text style={styles.errorText}>{errors.username.message}</Text>}
 
-        <Text style={styles.text}>Password</Text>
-        <Controller
-          control={control}
-          name="password"
-          rules={{
-            required: 'Password is required',
-            minLength: { value: 6, message: 'Password must be at least 6 characters' },
-          }}
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
-              placeholder="Enter Password"
-              secureTextEntry
-              value={value}
-              onChangeText={onChange}
+            <Text style={styles.text}>Password</Text>
+            <Controller
+              control={control}
+              name="password"
+              rules={{
+                required: 'Password is required',
+                minLength: { value: 8, message: 'Password must be at least 8 characters long' },
+                maxLength: { value: 12, message: 'Password must be at most 12 characters long' },
+                pattern: {
+                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/,
+                  message:
+                    'Password must include lowercase, uppercase, digit, and special character',
+                },
+              }}
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter Password"
+                  secureTextEntry
+                  value={value}
+                  onChangeText={onChange}
+                />
+              )}
             />
-          )}
-        />
-        {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
+            {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
 
-        <TouchableOpacity style={styles.registerButton} onPress={handleSubmit(onSubmit)}>
-          <Text style={styles.registerButtonText}>Register</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.registerButton} onPress={handleSubmit(onSubmit)}>
+              <Text style={styles.registerButtonText}>Register</Text>
+            </TouchableOpacity>
 
-        <View style={styles.divider} />
-        <Text style={styles.registerText}>
-          Already registered?{' '}
-          <Text
-            style={styles.registerLink}
-            onPress={() => navigation.navigate('Login')}
-          >
-            Login
-          </Text>
-        </Text>
-      </View>
-    </ImageBackground>
+            <View style={styles.divider} />
+            <Text style={styles.registerText}>
+              Already registered?{' '}
+              <Text
+                style={styles.registerLink}
+                onPress={() => navigation.navigate('Login')}
+              >
+                Login
+              </Text>
+            </Text>
+          </View>
+        </ScrollView>
+      </ImageBackground>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    height: '100%',
   },
   container: {
-    position: 'absolute',
-    top: screenHeight / 3.2,
-    left: 0,
-    right: 0,
-    justifyContent: 'flex-start',
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0)',
+    marginTop: screenHeight / 4,
   },
   text: {
     fontSize: 18,
@@ -159,14 +173,13 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
-    
   },
   divider: {
     borderBottomWidth: 1,
     borderColor: '#ccc',
     width: '80%',
     marginVertical: 16,
-    marginTop: 130,
+    marginTop: 110,
   },
   registerText: {
     fontSize: 14,

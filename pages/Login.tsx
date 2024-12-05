@@ -7,42 +7,50 @@ import {
   StyleSheet,
   ImageBackground,
   Dimensions,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+
+// Hardcoded credentials
+const HARDCODED_USERNAME = 'Amith';
+const HARDCODED_PASSWORD = 'Amith@123';
 
 export default function Login({ navigation }: any) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    if (username.trim() !== '' && password.trim() !== '') {
+    if (username === HARDCODED_USERNAME && password === HARDCODED_PASSWORD) {
       navigation.navigate('Home', { username });
     } else {
-      alert('Please enter both username and password');
+      alert('Invalid username or password (Developer Note : Please use Credentials mentioned in the palceholders)');
     }
   };
 
   return (
     <ImageBackground
       source={require('../assets/Login.png')}
-      style={[styles.background, { width: screenWidth }]}
+      style={styles.background}
       resizeMode="cover"
     >
-      <View style={styles.container}>
-        <Text style={styles.text}>Email</Text>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <Text style={styles.text}>Username</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter Email"
+          placeholder="Enter Username (Use Amith)"
           value={username}
           onChangeText={setUsername}
-          keyboardType="email-address"
           autoCapitalize="none"
         />
         <Text style={styles.text}>Password</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter Password"
+          placeholder="Enter Password (Use Amith@123)"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
@@ -60,7 +68,7 @@ export default function Login({ navigation }: any) {
             Register
           </Text>
         </Text>
-      </View>
+      </KeyboardAvoidingView>
     </ImageBackground>
   );
 }
@@ -68,17 +76,15 @@ export default function Login({ navigation }: any) {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    height: '100%',
+    width: screenWidth,
+    height: screenHeight,
   },
   container: {
-    position: 'absolute',
-    top: screenHeight / 2.8, // Align the form to the second half
-    left: 0,
-    right: 0,
-    justifyContent: 'flex-start',
+    top: screenHeight / 7,
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0)', // Transparent overlay for readability
   },
   text: {
     fontSize: 18,
@@ -86,14 +92,14 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginLeft: '10%',
     fontWeight: '600',
-    color: '#000', 
+    color: '#000',
   },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 16,
     width: '80%',
-    marginBottom: 5,
+    marginBottom: 10,
     borderRadius: 8,
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
   },
@@ -103,7 +109,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: '40%',
     alignItems: 'center',
-    marginBottom: 170,
     marginTop: 16,
   },
   loginButtonText: {
@@ -116,6 +121,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     width: '80%',
     marginVertical: 16,
+    marginTop: 160,
   },
   registerText: {
     fontSize: 14,
