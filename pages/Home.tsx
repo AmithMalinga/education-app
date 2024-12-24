@@ -17,9 +17,9 @@ const Home = ({
 }) => {
   const username = route?.params?.username || 'User';
 
-  const navigateTo = (page: string) => {
-    navigation.navigate(page); 
-  };
+  const navigateTo = (page: string, params = {}) => {
+    navigation.navigate(page, params);
+  };  
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -51,8 +51,8 @@ const Home = ({
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.navBanner}
-          onPress={() => navigateTo('Rockets')}
-        >
+          onPress={() => navigateTo('Rockets', { username })}
+          >
           <Image
             source={require('../assets/SpaceShipsBg.png')}
             style={styles.navImage}
@@ -61,7 +61,7 @@ const Home = ({
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.navBanner}
-          onPress={() => navigateTo('Quiz')}
+          onPress={() => navigateTo('Quiz', { username })}
         >
           <Image
             source={require('../assets/QuizBg.png')}
